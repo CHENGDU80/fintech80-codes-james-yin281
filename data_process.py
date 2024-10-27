@@ -10,6 +10,7 @@ import os
 #### Define the path of the dataset ####
 OUTPUT_FOLDER = 'dataset/data/'
 AV_ROAD_TEST_FOLDER = 'dataset/CD80_dataset/AV Road Test Data/'
+HUMAN_DRIVER_CRASH_FOLER = 'dataset/CD80_dataset/Human-Driving and AV Crash Data/Human Driver Crash Datasets/NHTSA/'
 SELF_DRIVING_CRASH_FOLDER = 'dataset/CD80_dataset/Human-Driving and AV Crash Data/Self-Driving Crash Datasets/'
 HUMAN_DRIVER_BEHAVIOR_FOLDER = 'dataset/CD80_dataset/Human-Driving and AV IoT Data/Human Driver IoT Datasets/Driver Behavior Dataset/'
 POLID_DRIVING_FOLDER='dataset/CD80_dataset/Human-Driving and AV IoT Data/Human Driver IoT Datasets/Polidriving Dataset/'
@@ -73,6 +74,71 @@ def AV_road_test_data_process():
     Disengagements.drop(columns=['Unnamed: 9'],inplace=True)
     Mileage.to_csv(OUTPUT_FOLDER+'AVTEST_Mileage.csv',index=False)
     Disengagements.to_csv(OUTPUT_FOLDER+'AVTEST_Disengagements.csv',index=False)
+
+
+def Human_driver_crash_data_process():
+    years = ['2020', '2021', '2022']
+    
+    # 检查并删除完全相同的列（列名不相同但内容相同）
+    def drop_identical_columns(df):
+        cols_to_drop = set()
+        for col1 in df.columns:
+            if col1 in cols_to_drop:
+                continue
+            for col2 in df.columns:
+                if col1 != col2 and col2 not in cols_to_drop:
+                    # 检查内容是否相同
+                    if df[col1].equals(df[col2]):
+                        cols_to_drop.add(col2)
+        return df.drop(columns=cols_to_drop)
+    
+    df_combined = pd.DataFrame()
+    
+    for year in years:
+        path = HUMAN_DRIVER_CRASH_FOLER + year + '/CRSS' + year + 'CSV/CRSS' + year + 'CSV'
+        # path = f'dataset/CD80_dataset/Human-Driving and AV Crash Data/Human Driver Crash Datasets/NHTSA/{year}/CRSS{year}CSV/CRSS{year}CSV'
+        files = [f for f in os.listdir(path) if f.endswith('.csv') or f.endswith('.CSV')]
+        df_merged = pd.DataFrame()  # 用来存放year的合并数据
+        
+        for file in files:
+            file_upper = file.upper() # 转换为大写，忽略文件名大小写不一致
+            if file_upper in ['DAMAGE.CSV', 'CEVENT.CSV', 'VEVENT.CSV', 'VSOE.CSV']:
+                continue
+            try:
+                df_to_merge = pd.read_csv(path + '/' + file, encoding='ISO-8859-1')
+            except UnicodeDecodeError:
+                df_to_merge = pd.read_csv(path + '/' + file, encoding='latin1')
+            
+            df_to_merge = df_to_merge.dropna(axis=0, how='all') # 删除空行
+            df_to_merge = df_to_merge.dropna(axis=1, how='all') # 删除空列
+            # df_to_merge = df_to_merge[[col for col in df_to_merge.columns if '_IM' not in col]] # 去除df_to_merge中包含'_IM'的列
+            if df_merged.empty:
+                df_merged = df_to_merge
+            else:
+                common_columns = [col for col in df_merged.columns if col in df_to_merge.columns]
+                if not common_columns:  # 如果没有共同列，跳过该文件
+                    print(f"No common columns with {file}, skipping.")
+                    continue
+                
+                # 将共同列转换为字符串
+                df_merged[common_columns] = df_merged[common_columns].astype(str)
+                df_to_merge[common_columns] = df_to_merge[common_columns].astype(str)
+                # 合并 DataFrame
+                df_merged = pd.merge(df_merged, df_to_merge, on=common_columns, how='left')
+                
+            del df_to_merge
+            df_merged = df_merged.dropna(axis=1, how='all')  # 删除空列
+            df_merged = df_merged.loc[:, ~df_merged.columns.duplicated()]   # 删除重复列
+        
+        # df_merged.to_csv(f'merged{year}.csv', index=False)
+        df_combined = pd.concat([df_combined, df_merged], axis=0, ignore_index=True) # 纵向合并
+        del df_merged
+        
+        df_combined = drop_identical_columns(df_combined)   # 去掉完全相同的列（列名不相同但内容相同）
+        print(f"Rows after concatenating: {len(df_combined)}")
+        
+    df_combined.to_csv(OUTPUT_FOLDER + 'Human_Driver_Crash.csv', index=False)
+
 
 def Selfdriving_crash_data_process():
     """
@@ -265,7 +331,6 @@ def Selfdriving_IOT_data_process():
         merged_df.sort_values(by='timestamp', inplace=True)
         merged_df.interpolate(method='linear', inplace=True, limit_direction='both')
         merged_df.reset_index(inplace=True)
-        
         return merged_df
     final_data=[]
     for i in os.listdir(SELFDRIVING_IOT_FOLDER+'Chunk_1'):
@@ -283,13 +348,6 @@ def Selfdriving_IOT_data_process():
             final_data.append(combined_df)
     selfdriving_iot=pd.concat(final_data)
     selfdriving_iot.to_csv(OUTPUT_FOLDER+'Selfdriving_IOT_2.csv',index=False)
-    # Combine the two parts of selfdriving_iot data and delete the original files
-    selfdriving_iot_combined = pd.concat([pd.read_csv(OUTPUT_FOLDER+'Selfdriving_IOT_1.csv'), pd.read_csv(OUTPUT_FOLDER+'Selfdriving_IOT_2.csv')])
-    selfdriving_iot_combined.to_csv(OUTPUT_FOLDER+'Selfdriving_IOT.csv', index=False)
-
-    # Remove the original files
-    os.remove(OUTPUT_FOLDER+'Selfdriving_IOT_1.csv')
-    os.remove(OUTPUT_FOLDER+'Selfdriving_IOT_2.csv')
     
 def Insurance_claims_data_process():
     """
@@ -322,6 +380,7 @@ def main():
     Human_driver_behavior_data_process()
     Polidriving_data_process()
     Selfdriving_IOT_data_process()
+    Human_driver_crash_data_process()
     Insurance_claims_data_process()
 
 if __name__ == '__main__':
