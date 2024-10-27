@@ -102,7 +102,7 @@ def Human_driver_crash_data_process():
         
         for file in files:
             file_upper = file.upper() # 转换为大写，忽略文件名大小写不一致
-            if file_upper in ['DAMAGE.CSV', 'CEVENT.CSV', 'VEVENT.CSV', 'VSOE.CSV']:
+            if file_upper in ['CEVENT.CSV', 'VEVENT.CSV', 'VSOE.CSV']:
                 continue
             try:
                 df_to_merge = pd.read_csv(path + '/' + file, encoding='ISO-8859-1')
@@ -125,13 +125,17 @@ def Human_driver_crash_data_process():
                 df_to_merge[common_columns] = df_to_merge[common_columns].astype(str)
                 # 合并 DataFrame
                 df_merged = pd.merge(df_merged, df_to_merge, on=common_columns, how='left')
+                # 输出df_merged的行列
                 
             del df_to_merge
             df_merged = df_merged.dropna(axis=1, how='all')  # 删除空列
             df_merged = df_merged.loc[:, ~df_merged.columns.duplicated()]   # 删除重复列
+            print(f"Size of df_merged: {df_merged.shape}")
         
         # df_merged.to_csv(f'merged{year}.csv', index=False)
         df_combined = pd.concat([df_combined, df_merged], axis=0, ignore_index=True) # 纵向合并
+        print(f"Size of df_combined: {df_combined.shape}")
+
         del df_merged
         
         df_combined = drop_identical_columns(df_combined)   # 去掉完全相同的列（列名不相同但内容相同）
@@ -384,4 +388,5 @@ def main():
     Insurance_claims_data_process()
 
 if __name__ == '__main__':
-    main()
+    # main()
+    Human_driver_crash_data_process()
