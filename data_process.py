@@ -108,9 +108,11 @@ def Human_driver_crash_data_process():
                 df_to_merge = pd.read_csv(path + '/' + file, encoding='ISO-8859-1')
             except UnicodeDecodeError:
                 df_to_merge = pd.read_csv(path + '/' + file, encoding='latin1')
-            
-            df_to_merge = df_to_merge.dropna(axis=0, how='all') # 删除空行
-            df_to_merge = df_to_merge.dropna(axis=1, how='all') # 删除空列
+            # 如果df_to_merge的列名中有包括'DR_ZIP'的，将其输出
+            if 'DR_ZIP' in df_to_merge.columns:
+                print(f"DR_ZIP in {file}")
+            #df_to_merge = df_to_merge.dropna(axis=0, how='all') # 删除空行
+            #df_to_merge = df_to_merge.dropna(axis=1, how='all') # 删除空列
             # df_to_merge = df_to_merge[[col for col in df_to_merge.columns if '_IM' not in col]] # 去除df_to_merge中包含'_IM'的列
             if df_merged.empty:
                 df_merged = df_to_merge
@@ -128,20 +130,23 @@ def Human_driver_crash_data_process():
                 # 输出df_merged的行列
                 
             del df_to_merge
-            df_merged = df_merged.dropna(axis=1, how='all')  # 删除空列
-            df_merged = df_merged.loc[:, ~df_merged.columns.duplicated()]   # 删除重复列
-            print(f"Size of df_merged: {df_merged.shape}")
+            #df_merged = df_merged.dropna(axis=1, how='all')  # 删除空列
+            #df_merged = df_merged.loc[:, ~df_merged.columns.duplicated()]   # 删除重复列
+            #print(f"Size of df_merged: {df_merged.shape}")
         
         # df_merged.to_csv(f'merged{year}.csv', index=False)
         df_combined = pd.concat([df_combined, df_merged], axis=0, ignore_index=True) # 纵向合并
-        print(f"Size of df_combined: {df_combined.shape}")
+        if 'DR_ZIP' in df_combined.columns:
+            print(f"DR_ZIP in df_combined")
+        
+        #print(f"Size of df_combined: {df_combined.shape}")
 
         del df_merged
         
-        df_combined = drop_identical_columns(df_combined)   # 去掉完全相同的列（列名不相同但内容相同）
+        #df_combined = drop_identical_columns(df_combined)   # 去掉完全相同的列（列名不相同但内容相同）
         print(f"Rows after concatenating: {len(df_combined)}")
         
-    df_combined.to_csv(OUTPUT_FOLDER + 'Human_Driver_Crash.csv', index=False)
+    df_combined.to_csv(OUTPUT_FOLDER + 'Human_Driver_Crash_2.csv', index=False)
 
 
 def Selfdriving_crash_data_process():

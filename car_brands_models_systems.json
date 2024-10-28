@@ -1,0 +1,154 @@
+{
+    "Tesla": {
+        "models": [
+            {"name": "Model S", "price": 79990},
+            {"name": "Model 3", "price": 39990},
+            {"name": "Model X", "price": 89990},
+            {"name": "Model Y", "price": 49990},
+            {"name": "Cybertruck", "price": 39900}
+        ],
+        "autonomous_system": "Tesla Full Self-Driving",
+        "hardware": {
+            "Sensors": "Camera",
+            "Computing Units": "Tesla FSD Computer",
+            "Connectivity": "5G Modem",
+            "Power System": "Battery Pack",
+            "Braking System": "Electronic Brake Booster",
+            "Steering System": "Steering Actuator"
+        },
+        "sales": 1.81E6
+    },
+    "BYD": {
+        "models": [
+            {"name": "Han", "price": 30000},
+            {"name": "Tang", "price": 35000},
+            {"name": "Seal", "price": 28000},
+            {"name": "Song Plus", "price": 32000},
+            {"name": "Dolphin", "price": 20000}
+        ],
+        "autonomous_system": "BYD DiPilot",
+        "hardware": {
+            "Sensors": "LiDAR",
+            "Computing Units": "NVIDIA Orin",
+            "Connectivity": "Bluetooth Adapter",
+            "Power System": "DC-DC Converter",
+            "Braking System": "ABS Module",
+            "Steering System": "Electric Power Steering"
+        },
+        "sales": 3.02E6
+    },
+    "NIO": {
+        "models": [
+            {"name": "ET7", "price": 69000},
+            {"name": "ET5", "price": 51000},
+            {"name": "ES8", "price": 68000},
+            {"name": "ES6", "price": 52000},
+            {"name": "EC6", "price": 49000}
+        ],
+        "autonomous_system": "NIO Pilot",
+        "hardware": {
+            "Sensors": "LiDAR",
+            "Computing Units": "NVIDIA Orin",
+            "Connectivity": "5G Modem",
+            "Power System": "Battery Pack",
+            "Braking System": "Electronic Brake Booster",
+            "Steering System": "Steering Actuator"
+        },
+        "sales": 0.16E6
+    },
+    "Li Auto": {
+        "models": [
+            {"name": "Li ONE", "price": 46000},
+            {"name": "L7", "price": 50000},
+            {"name": "L8", "price": 53000},
+            {"name": "L9", "price": 68000},
+            {"name": "L5", "price": 45000}
+        ],
+        "autonomous_system": "Li AD Max",
+        "hardware": {
+            "Sensors": "Camera + LiDAR",
+            "Computing Units": "NVIDIA Orin",
+            "Connectivity": "5G Modem",
+            "Power System": "Inverter",
+            "Braking System": "ABS Module",
+            "Steering System": "Electric Power Steering"
+        },
+        "sales": 0.376E6
+    },
+    "XPeng": {
+        "models": [
+            {"name": "P7", "price": 35000},
+            {"name": "G9", "price": 46000},
+            {"name": "P5", "price": 25000},
+            {"name": "G3i", "price": 20000},
+            {"name": "P8", "price": 30000}
+        ],
+        "autonomous_system": "XPilot",
+        "hardware": {
+            "Sensors": "LiDAR",
+            "Computing Units": "Xavier AI Chip",
+            "Connectivity": "Wi-Fi Module",
+            "Power System": "Battery Pack",
+            "Braking System": "Electronic Brake Booster",
+            "Steering System": "Steering Actuator"
+        },
+        "sales": 0.141E6
+    },
+    "Audi": {
+        "models": [
+            {"name": "A8 L", "price": 86000},
+            {"name": "e-tron", "price": 66000},
+            {"name": "Q8 e-tron", "price": 74000},
+            {"name": "A6 e-tron", "price": 70000},
+            {"name": "Q4 e-tron", "price": 45000}
+        ],
+        "autonomous_system": "Audi AI",
+        "hardware": {
+            "Sensors": "Radar + LiDAR",
+            "Computing Units": "NVIDIA Jetson",
+            "Connectivity": "5G Modem",
+            "Power System": "Battery Pack",
+            "Braking System": "ABS Module",
+            "Steering System": "Electric Power Steering"
+        },
+        "sales": 1.9E6
+    },
+    "BMW": {
+        "models": [
+            {"name": "iX", "price": 83000},
+            {"name": "i4", "price": 56000},
+            {"name": "i7", "price": 120000},
+            {"name": "X5 xDrive45e", "price": 65000},
+            {"name": "7 Series", "price": 87000}
+        ],
+        "autonomous_system": "BMW iDrive",
+        "hardware": {
+            "Sensors": "Camera + Radar",
+            "Computing Units": "NVIDIA Orin",
+            "Connectivity": "Wi-Fi Module",
+            "Power System": "Battery Pack",
+            "Braking System": "Electronic Brake Booster",
+            "Steering System": "Steering Actuator"
+        },
+        "sales": 2.25E6
+    },
+    "Mercedes-Benz": {
+        "models": [
+            {"name": "EQS", "price": 102000},
+            {"name": "EQC", "price": 67000},
+            {"name": "S-Class", "price": 110000},
+            {"name": "GLS", "price": 76000},
+            {"name": "E-Class", "price": 54000}
+        ],
+        "autonomous_system": "Mercedes-Benz Drive Pilot",
+        "hardware": {
+            "Sensors": "LiDAR + Camera",
+            "Computing Units": "NVIDIA Xavier",
+            "Connectivity": "5G Modem",
+            "Power System": "Inverter",
+            "Braking System": "ABS Module",
+            "Steering System": "Electric Power Steering"
+        },
+        "sales": 2.49E6
+    }
+}

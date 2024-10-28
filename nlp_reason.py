@@ -28,7 +28,7 @@ def get_chat_response(chat_response,chat_input,type,batch_size):
         response = chat_response.create(
             model="gpt-4o",
             messages=[
-                {"role": "system", "content": f"You need to categorize these reasons of disengagements. The categories include Perception Failures, Decision-Making Errors, Control System Failures, Sensor and Hardware Malfunctions, Environmental Hazards, Human Factors, and External Factors. The input is sepearted by $ for each reason. You only need to output the categories seperated by comma. The output should be in the same order as the input with size {batch_size}."},
+                {"role": "system", "content": f"You need to categorize these reasons of crash. The categories include Perception Failures, Decision-Making Errors, Control System Failures, Sensor and Hardware Malfunctions, Environmental Hazards, Human Factors, and External Factors. The input is sepearted by $ for each reason. You only need to output the categories seperated by comma. The output should be in the same order as the input with size {batch_size}."},
                 {"role": "user", "content": chat_input},
             ],
         )
@@ -36,7 +36,7 @@ def get_chat_response(chat_response,chat_input,type,batch_size):
 def categorize_data(path):
     avtest, selfdriving_crash = get_data(path)
     chat_response = openai_server()
-    batch_size = 100
+    batch_size = 10
     selfdriving_crash_categories = []
     avtest_categories = []
     for i in range(0, len(avtest), batch_size):
