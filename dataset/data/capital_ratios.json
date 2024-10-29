@@ -1,0 +1,22 @@
+[
+    {
+        "category": "Safe Zone",
+        "range": "≥ 150%",
+        "description": "Financial status is stable, with sufficient capital to withstand potential risks."
+    },
+    {
+        "category": "Warning Zone",
+        "range": "100% - 150%",
+        "description": "Meets minimum capital requirements but requires attention."
+    },
+    {
+        "category": "Danger Zone",
+        "range": "< 100%",
+        "description": "Facing severe financial risk, immediate action is needed."
+    },
+    {
+        "category": "Severe Danger Zone",
+        "range": "< 80%",
+        "description": "Extremely fragile financial status, potential risk of bankruptcy."
+    }
+]
